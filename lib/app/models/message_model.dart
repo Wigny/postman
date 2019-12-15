@@ -1,15 +1,23 @@
+// To parse this JSON data, do
+//
+//     final messageModel = messageModelFromJson(jsonString);
+
+import 'dart:convert';
+
+import 'package:postman/app/models/user_model.dart';
+
 class MessageModel {
   int id;
   String content;
   int receptor;
-  int emissor;
+  UserModel user;
   DateTime createdAt;
 
   MessageModel({
     this.id,
     this.content,
     this.receptor,
-    this.emissor,
+    this.user,
     this.createdAt,
   });
 
@@ -17,7 +25,7 @@ class MessageModel {
         id: json["id"],
         content: json["content"],
         receptor: json["receptor"],
-        emissor: json["emissor"],
+        user: UserModel.fromJson(json["user"]),
         createdAt: DateTime.parse(json["createdAt"]),
       );
 
@@ -25,7 +33,16 @@ class MessageModel {
         "id": id,
         "content": content,
         "receptor": receptor,
-        "emissor": emissor,
+        "user": user.toJson(),
         "createdAt": createdAt.toIso8601String(),
       };
+
+  static List<MessageModel> fromJsonList(List list) {
+    if (list == null) return null;
+    return list
+        .map<MessageModel>(
+          (item) => MessageModel.fromJson(item),
+        )
+        .toList();
+  }
 }
