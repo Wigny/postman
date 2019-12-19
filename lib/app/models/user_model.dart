@@ -1,3 +1,13 @@
+// To parse this JSON data, do
+//
+//     final userModel = userModelFromJson(jsonString);
+
+import 'dart:convert';
+
+UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
+
+String userModelToJson(UserModel data) => json.encode(data.toJson());
+
 class UserModel {
   int id;
   String nickname;
@@ -15,13 +25,13 @@ class UserModel {
         id: json["id"],
         nickname: json["nickname"],
         username: json["username"],
-        image: json["image"],
+        image: json["image"] == null ? null : json["image"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "nickname": nickname,
         "username": username,
-        "image": image,
+        "image": image == null ? null : image,
       };
 }
