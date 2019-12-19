@@ -1,13 +1,9 @@
-import 'dart:convert';
-
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:postman/app/models/message_model.dart';
-import 'package:postman/app/models/user_model.dart';
+import 'package:postman/app/models/chat_model.dart';
+import 'package:postman/app/models/user_chats_model.dart';
+import 'package:postman/app/pages/contacts/contacts_module.dart';
 import 'package:postman/app/pages/home/home_bloc.dart';
 import 'package:postman/app/pages/home/home_module.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -30,7 +26,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Olá, Tester'),
+        title: Text('Postman'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -40,17 +36,26 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: StreamBuilder<List<MessageModel>>(
-          stream: _homeBloc.messageListFlux,
+        child: StreamBuilder<List<UserChatsModel>>(
+          stream: _homeBloc.chatListStream,
           builder: _builder,
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ContactsModule(),
+          ),
+        ),
+        child: Icon(Icons.people),
       ),
     );
   }
 
   Widget _builder(
     BuildContext context,
-    AsyncSnapshot<List<MessageModel>> snapshot,
+    AsyncSnapshot snapshot,
   ) {
     if (!snapshot.hasData || snapshot.data.isEmpty)
       return Center(
@@ -60,8 +65,9 @@ class _HomePageState extends State<HomePage> {
     return ListView.separated(
       itemCount: snapshot.data.length,
       itemBuilder: (BuildContext context, int index) {
-        final MessageModel message = snapshot.data[index];
-        return _listTile(message);
+        snapshot.data.sort(sortChat);
+
+        return _listTile(snapshot.data[index].chat);
       },
       separatorBuilder: (BuildContext context, int index) => Padding(
         padding: EdgeInsets.only(
@@ -72,43 +78,26 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _listTile(MessageModel message) {
-    DateFormat dateFormat = DateFormat("dd-MM-yyyy HH:mm:ss");
+  int sortChat(UserChatsModel a, UserChatsModel b) =>
+      b.chat.messages[0].sendingAt.compareTo(a.chat.messages[0].sendingAt);
 
-    return InkWell(
-      onTap: () {},
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundImage: NetworkImage(message.user.image),
-        ),
-        title: Text(message.user.username),
-        subtitle: Text(message.content),
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(2),
-              child: Text(
-                dateFormat.format(message.createdAt),
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Theme.of(context).accentColor,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(2),
-              child: Badge(
-                badgeContent: Text(
-                  '3',
-                  style: TextStyle(color: Colors.white),
-                ),
-                badgeColor: Theme.of(context).accentColor,
-              ),
-            ),
-          ],
-        ),
+  Widget _listTile(ChatModel chat) {
+    return ListTile(
+      leading: Container(
+        width: 50,
+        height: 50,
+        child: (chat.image != null)
+            ? CircleAvatar(
+                backgroundImage: NetworkImage(chat.image),
+              )
+            : Icon(Icons.chat_bubble_outline),
       ),
+      title: Text(chat.name),
+      subtitle: (chat.messages.length != 0)
+          ? Text(
+              '${chat.messages[0].user.username}: ${chat.messages[0].content}',
+            )
+          : null,
     );
   }
 }

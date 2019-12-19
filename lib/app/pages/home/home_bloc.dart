@@ -1,26 +1,44 @@
-import 'dart:convert';
-
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:postman/app/models/message_model.dart';
+import 'package:postman/app/models/user_chats_model.dart';
+import 'package:postman/app/models/user_model.dart';
+import 'package:postman/app/repositories/constants.dart';
 import 'package:postman/app/repositories/hasura_repository.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeBloc extends BlocBase {
   final HasuraRepository _hasura;
+  UserModel user;
 
-  final _controller = BehaviorSubject<List<MessageModel>>();
-  Observable<List<MessageModel>> get messageListFlux => _controller.stream;
-  Sink<List<MessageModel>> get messageListEvent => _controller.sink;
+  final _controller = BehaviorSubject<List<UserChatsModel>>();
+  Stream<List<UserChatsModel>> get chatListStream => _controller.stream;
+  Sink<List<UserChatsModel>> get chatListEvent => _controller.sink;
 
   HomeBloc(this._hasura) {
+    _init();
+  }
+
+  _init() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+
+    user = userModelFromJson(
+      _prefs.getString('user'),
+    );
+
+    _getChat(user.id);
+  }
+
+  _getChat(int userId) {
     _hasura
-        .getLastMessage()
-        .listen(
-          (List<MessageModel> data) => messageListEvent.add(data),
+        .subscription(GET_CHAT, variables: {'user_id': userId})
+        .map(
+          (res) => res['data']['user_chats']
+              .map<UserChatsModel>(
+                (i) => UserChatsModel.fromJson(i),
+              )
+              .toList(),
         )
-        .onError(
-          (err) => print('error $err'),
-        );
+        .listen(chatListEvent.add);
   }
 
   @override

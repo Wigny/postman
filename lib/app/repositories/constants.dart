@@ -51,7 +51,7 @@ mutation sendMessage(\$message: [message_insert_input!]!) {
       id
       content
       sending_at
-      chat
+      chat_id
       user {
         id
         username
@@ -109,4 +109,24 @@ query getUsers(\$nickname: String){
     image
   }
 }
+''';
+
+const GET_CHAT = '''
+subscription getChat(\$user_id: Int!) {
+  user_chats(where: {user_id: {_eq: \$user_id}}) {
+    chat {
+      id
+      name
+      image
+      messages(order_by: {sending_at: desc}, limit: 1) {
+        content
+        sending_at
+        user {
+          username
+        }
+      }
+    }
+  }
+}
+
 ''';

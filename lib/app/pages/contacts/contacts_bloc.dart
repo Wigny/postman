@@ -8,7 +8,7 @@ class ContactsBloc extends BlocBase {
   final HasuraRepository _hasura;
 
   final _controller = BehaviorSubject<List<UserModel>>();
-  Observable<List<UserModel>> get userListFlux => _controller.stream;
+  Stream<List<UserModel>> get userListFlux => _controller.stream;
   Sink<List<UserModel>> get userListEvent => _controller.sink;
 
   ContactsBloc(this._hasura) {

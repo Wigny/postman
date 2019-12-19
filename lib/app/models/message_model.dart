@@ -1,48 +1,47 @@
-// To parse this JSON data, do
-//
-//     final messageModel = messageModelFromJson(jsonString);
-
 import 'dart:convert';
 
 import 'package:postman/app/models/user_model.dart';
 
+List<MessageModel> messageModelFromJson(String str) => List<MessageModel>.from(
+    json.decode(str).map((x) => MessageModel.fromJson(x)));
+
+String messageModelToJson(List<MessageModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 class MessageModel {
   int id;
   String content;
-  int receptor;
+  int userId;
+  int chatId;
+  DateTime sendingAt;
   UserModel user;
-  DateTime createdAt;
 
   MessageModel({
-    this.id,
     this.content,
-    this.receptor,
+    this.sendingAt,
     this.user,
-    this.createdAt,
+    this.id,
+    this.userId,
+    this.chatId,
   });
 
   factory MessageModel.fromJson(Map<String, dynamic> json) => MessageModel(
-        id: json["id"],
-        content: json["content"],
-        receptor: json["receptor"],
-        user: UserModel.fromJson(json["user"]),
-        createdAt: DateTime.parse(json["createdAt"]),
+        content: json["content"] == null ? null : json["content"],
+        sendingAt: json["sending_at"] == null
+            ? null
+            : DateTime.parse(json["sending_at"]),
+        user: json["user"] == null ? null : UserModel.fromJson(json["user"]),
+        id: json["id"] == null ? null : json["id"],
+        userId: json["user_id"] == null ? null : json["user_id"],
+        chatId: json["chat_id"] == null ? null : json["chat_id"],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "content": content,
-        "receptor": receptor,
-        "user": user.toJson(),
-        "createdAt": createdAt.toIso8601String(),
+        "content": content == null ? null : content,
+        "sending_at": sendingAt == null ? null : sendingAt.toIso8601String(),
+        "user": user == null ? null : user.toJson(),
+        "id": id == null ? null : id,
+        "user_id": userId == null ? null : userId,
+        "chat_id": chatId == null ? null : chatId,
       };
-
-  static List<MessageModel> fromJsonList(List list) {
-    if (list == null) return null;
-    return list
-        .map<MessageModel>(
-          (item) => MessageModel.fromJson(item),
-        )
-        .toList();
-  }
 }
