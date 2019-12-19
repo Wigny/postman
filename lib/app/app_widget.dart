@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:postman/app/pages/home/home_module.dart';
-import 'package:postman/app/pages/login/login_module.dart';
 
 class AppWidget extends StatelessWidget {
   @override

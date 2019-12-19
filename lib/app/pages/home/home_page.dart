@@ -4,6 +4,7 @@ import 'package:postman/app/models/user_chats_model.dart';
 import 'package:postman/app/pages/contacts/contacts_module.dart';
 import 'package:postman/app/pages/home/home_bloc.dart';
 import 'package:postman/app/pages/home/home_module.dart';
+import 'package:postman/app/pages/chat/chat_module.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -42,11 +43,8 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ContactsModule(),
-          ),
+        onPressed: () => openPage(
+          ContactsModule(),
         ),
         child: Icon(Icons.people),
       ),
@@ -82,22 +80,34 @@ class _HomePageState extends State<HomePage> {
       b.chat.messages[0].sendingAt.compareTo(a.chat.messages[0].sendingAt);
 
   Widget _listTile(ChatModel chat) {
-    return ListTile(
-      leading: Container(
-        width: 50,
-        height: 50,
-        child: (chat.image != null)
-            ? CircleAvatar(
-                backgroundImage: NetworkImage(chat.image),
+    return InkWell(
+      onTap: () => openPage(ChatModule(chat)),
+      child: ListTile(
+        leading: Container(
+          width: 50,
+          height: 50,
+          child: (chat.image != null)
+              ? CircleAvatar(
+                  backgroundImage: NetworkImage(chat.image),
+                )
+              : Icon(Icons.chat_bubble_outline),
+        ),
+        title: Text(chat.name),
+        subtitle: (chat.messages.length != 0)
+            ? Text(
+                '${chat.messages[0].user.username}: ${chat.messages[0].content}',
               )
-            : Icon(Icons.chat_bubble_outline),
+            : null,
       ),
-      title: Text(chat.name),
-      subtitle: (chat.messages.length != 0)
-          ? Text(
-              '${chat.messages[0].user.username}: ${chat.messages[0].content}',
-            )
-          : null,
+    );
+  }
+
+  openPage(pageModule) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => pageModule,
+      ),
     );
   }
 }
