@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:postman/app/models/user_model.dart';
 import 'package:postman/app/pages/contacts/contacts_bloc.dart';
 import 'package:postman/app/pages/contacts/contacts_module.dart';
+import 'package:postman/app/widgets/user_image/user_image_widget.dart';
 
 class ContactsPage extends StatefulWidget {
   final String title;
@@ -43,11 +44,9 @@ class _ContactsPageState extends State<ContactsPage> {
       leading: Container(
         width: 50,
         height: 50,
-        child: (user.image != null)
-            ? CircleAvatar(
-                backgroundImage: NetworkImage(user.image),
-              )
-            : Icon(Icons.person),
+        child: UserImageWidget(
+          image: user.image
+        ),
       ),
       title: Text(user.username),
     );

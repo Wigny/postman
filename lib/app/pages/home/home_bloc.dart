@@ -1,4 +1,5 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:hasura_connect/hasura_connect.dart';
 import 'package:postman/app/models/user_chats_model.dart';
 import 'package:postman/app/models/user_model.dart';
 import 'package:postman/app/repositories/constants.dart';
@@ -10,6 +11,7 @@ class HomeBloc extends BlocBase {
   final HasuraRepository _hasura;
   UserModel user;
 
+  Snapshot _getChatSubscription;
   final _controller = BehaviorSubject<List<UserChatsModel>>();
   Stream<List<UserChatsModel>> get chatListStream => _controller.stream;
   Sink<List<UserChatsModel>> get chatListEvent => _controller.sink;
@@ -29,8 +31,10 @@ class HomeBloc extends BlocBase {
   }
 
   _getChat(int userId) {
-    _hasura
-        .subscription(GET_CHAT, variables: {'user_id': userId})
+    _getChatSubscription =
+        _hasura.subscription(GET_CHAT, variables: {'user_id': userId});
+
+    _getChatSubscription
         .map(
           (res) => res['data']['user_chats']
               .map<UserChatsModel>(
@@ -43,7 +47,8 @@ class HomeBloc extends BlocBase {
 
   @override
   void dispose() {
-    _controller.close();
+    _controller?.close();
+    _getChatSubscription?.close();
     super.dispose();
   }
 }

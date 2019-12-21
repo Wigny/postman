@@ -22,7 +22,7 @@ class HasuraRepository extends Disposable {
     }
   }
 
-  Stream subscription(
+  Snapshot subscription(
     String query, {
     Map<String, dynamic> variables,
   }) {

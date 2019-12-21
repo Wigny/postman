@@ -5,6 +5,7 @@ import 'package:postman/app/pages/contacts/contacts_module.dart';
 import 'package:postman/app/pages/home/home_bloc.dart';
 import 'package:postman/app/pages/home/home_module.dart';
 import 'package:postman/app/pages/chat/chat_module.dart';
+import 'package:postman/app/widgets/user_image/user_image_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
@@ -76,26 +77,40 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  int sortChat(UserChatsModel a, UserChatsModel b) =>
-      b.chat.messages[0].sendingAt.compareTo(a.chat.messages[0].sendingAt);
+  int sortChat(UserChatsModel a, UserChatsModel b) {
+    if (b.chat.messages.length != 0 && a.chat.messages.length != 0)
+      return b.chat.messages[0].sendingAt
+          .compareTo(a.chat.messages[0].sendingAt);
+    else
+      return 0;
+  }
 
   Widget _listTile(ChatModel chat) {
     return InkWell(
-      onTap: () => openPage(ChatModule(chat)),
+      onTap: () => openPage(
+        ChatModule(
+          chat,
+          _homeBloc.user,
+        ),
+      ),
       child: ListTile(
         leading: Container(
           width: 50,
           height: 50,
-          child: (chat.image != null)
-              ? CircleAvatar(
-                  backgroundImage: NetworkImage(chat.image),
-                )
-              : Icon(Icons.chat_bubble_outline),
+          child: UserImageWidget(image: chat.image),
         ),
         title: Text(chat.name),
         subtitle: (chat.messages.length != 0)
-            ? Text(
-                '${chat.messages[0].user.username}: ${chat.messages[0].content}',
+            ? RichText(
+                text: TextSpan(
+                  style: TextStyle(color: Colors.black),
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: '${chat.messages[0].user.username}:',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(text: ' ${chat.messages[0].content}'),
+                  ],
+                ),
               )
             : null,
       ),

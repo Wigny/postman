@@ -27,7 +27,7 @@ class ContactsBloc extends BlocBase {
 
   @override
   void dispose() {
-    _controller.close();
+    _controller?.close();
     super.dispose();
   }
 }

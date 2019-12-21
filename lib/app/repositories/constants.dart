@@ -63,34 +63,38 @@ mutation sendMessage(\$message: [message_insert_input!]!) {
 ''';
 
 const GET_MESSAGES = '''
-query fetchMessages(\$last_received_id: Int, \$last_received_ts: timestamptz) {
-  message(order_by: {sending_at: asc}, where: {_and: {id: {_neq: \$last_received_id}, sending_at: {_gte: \$last_received_ts}}}) {
-    id
-    content
-    sending_at
-    user {
+subscription getMessages(\$chat_id: Int!) {
+  chat(where: {id: {_eq: \$chat_id}}) {
+    messages(order_by: {sending_at: asc}) {
       id
-      username
-      image
+      content
+      sending_at
+      user {
+        id
+        username
+        image
+      }
     }
   }
 }
 ''';
 
-const GET_LAST_MESSAGE = '''
-subscription getLastMessage {
-  message ( order_by: { id: desc }, limit: 1) {
-    id
-    content
-    sending_at
-    user {
-      id
-      username
-      image
-    }
-  }
-}
-''';
+// const GET_LAST_MESSAGE = '''
+// subscription getLastMessage(\$chat_id: Int!) {
+//   chat(where: {id: {_eq: \$chat_id}}) {
+//     messages(order_by: {id: desc}, limit: 1) {
+//       id
+//       content
+//       sending_at
+//       user {
+//         id
+//         username
+//         image
+//       }
+//     }
+//   }
+// }
+// ''';
 
 const SET_LAST_SEEN = '''
 mutation (\$user_id: Int!) {
