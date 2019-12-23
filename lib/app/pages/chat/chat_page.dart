@@ -31,7 +31,6 @@ class _ChatPageState extends State<ChatPage> {
           ],
         ),
       ),
-      backgroundColor: Color(0xffebebeb),
       body: Column(
         children: <Widget>[
           Expanded(
@@ -56,18 +55,36 @@ class _ChatPageState extends State<ChatPage> {
 
     return Container(
       height: 65,
-      padding: const EdgeInsets.all(8),
-      child: TextField(
-        decoration: new InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-          hintText: "Digite uma mensagem",
-          filled: true,
-          fillColor: Colors.white,
-          focusedBorder: border,
-          enabledBorder: border,
-        ),
-        autofocus: false,
-        textInputAction: TextInputAction.search,
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: TextField(
+                controller: bloc.textController,
+                decoration: new InputDecoration(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                  hintText: "Digite uma mensagem",
+                  filled: true,
+                  focusedBorder: border,
+                  enabledBorder: border,
+                ),
+                autofocus: false,
+                textInputAction: TextInputAction.send,
+                onSubmitted: (value) => bloc.submitMessage(),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2.0),
+            child: FloatingActionButton(
+              child: Icon(Icons.send),
+              elevation: 0,
+              onPressed: () => bloc.submitMessage,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -93,22 +110,20 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _message(MessageModel message) {
-    var alignment = Alignment.centerLeft;
-    var color = Colors.white;
-    var crossAxisAlignment = CrossAxisAlignment.start;
-
     bool itsMe = message.user.id == bloc.user.id;
+
+    var alignment = Alignment.centerLeft;
+    var crossAxisAlignment = CrossAxisAlignment.start;
 
     if (itsMe) {
       alignment = Alignment.centerRight;
-      color = Color(0xffe5ffcc);
       crossAxisAlignment = CrossAxisAlignment.end;
     }
 
     return Container(
       alignment: alignment,
       child: Card(
-        color: color,
+        color: (itsMe) ? Theme.of(context).primaryColor : null,
         child: Container(
           width: MediaQuery.of(context).size.width * .75,
           child: Padding(

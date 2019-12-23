@@ -22,6 +22,21 @@ class HasuraRepository extends Disposable {
     }
   }
 
+  Future<Map<String, dynamic>> mutation(String query,
+      {Map<String, dynamic> variables}) async {
+    try {
+      var data = await connection.mutation(
+        query,
+        variables: variables,
+      );
+
+      return data['data'];
+    } on HasuraError catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
   Snapshot subscription(
     String query, {
     Map<String, dynamic> variables,

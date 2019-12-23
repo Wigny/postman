@@ -8,7 +8,8 @@ class AppWidget extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: _color,
-        accentColor: Color(0xff0cd260),
+        brightness: Brightness.dark,
+        accentColor: Color(0xff075E53),
       ),
       home: HomeModule(),
     );

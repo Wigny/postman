@@ -106,7 +106,7 @@ mutation (\$user_id: Int!) {
 
 const GET_USERS = '''
 query getUsers(\$nickname: String){
-  user(where: {nickname: {_eq: \$nickname}}) {
+  user(where: {nickname: {_eq: \$nickname}}, order_by: {username: asc}) {
     id
     nickname
     username
@@ -123,6 +123,7 @@ subscription getChat(\$user_id: Int!) {
       name
       image
       messages(order_by: {sending_at: desc}, limit: 1) {
+        id
         content
         sending_at
         user {

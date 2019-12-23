@@ -39,6 +39,21 @@ class ChatBloc extends BlocBase {
         .onError(print);
   }
 
+  submitMessage() {
+    var message = MessageModel(
+      content: textController.text,
+      userId: user.id,
+      chatId: chat.id,
+    );
+
+    _hasura.mutation(
+      SEND_MESSAGE,
+      variables: {'message': message.toJson()},
+    ).catchError(print);
+
+    textController.text = '';
+  }
+
   @override
   void dispose() {
     _controller?.close();

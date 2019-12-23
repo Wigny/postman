@@ -36,12 +36,17 @@ class MessageModel {
         chatId: json["chat_id"] == null ? null : json["chat_id"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "content": content == null ? null : content,
-        "sending_at": sendingAt == null ? null : sendingAt.toIso8601String(),
-        "user": user == null ? null : user.toJson(),
-        "id": id == null ? null : id,
-        "user_id": userId == null ? null : userId,
-        "chat_id": chatId == null ? null : chatId,
-      };
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {};
+
+    if (content != null) json['content'] = content;
+    if (sendingAt != null) json['sending_at'] = sendingAt;
+    if (user != null) json['user'] = user;
+    if (id != null) json['id'] = id;
+    if (userId != null) json['user_id'] = userId;
+    if (chatId != null) json['chat_id'] = chatId;
+
+    return json;
+  }
+
 }

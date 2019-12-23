@@ -103,11 +103,11 @@ class _HomePageState extends State<HomePage> {
         subtitle: (chat.messages.length != 0)
             ? RichText(
                 text: TextSpan(
-                  style: TextStyle(color: Colors.black),
                   children: <TextSpan>[
                     TextSpan(
-                        text: '${chat.messages[0].user.username}:',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                      text: '${chat.messages[0].user.username}:',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     TextSpan(text: ' ${chat.messages[0].content}'),
                   ],
                 ),
