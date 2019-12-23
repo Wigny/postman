@@ -1,4 +1,5 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hasura_connect/hasura_connect.dart';
 import 'package:postman/app/models/message_model.dart';
 import 'package:postman/app/models/user_model.dart';
@@ -12,7 +13,10 @@ class ChatBloc extends BlocBase {
   final UserModel user;
   final HasuraRepository _hasura;
 
+  TextEditingController textController = TextEditingController();
+
   Snapshot _getMessagesSubscription;
+
   final _controller = BehaviorSubject<List<MessageModel>>();
   Stream<List<MessageModel>> get messageListStream => _controller.stream;
   Sink<List<MessageModel>> get messageListEvent => _controller.sink;
