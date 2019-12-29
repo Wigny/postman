@@ -28,7 +28,9 @@ class ChatBloc extends BlocBase {
   _getMessages() {
     _getMessagesSubscription = _hasura.subscription(
       GET_MESSAGES,
-      variables: {'chat_id': chat.id},
+      variables: {
+        'chat_id': chat.id,
+      },
     );
 
     _getMessagesSubscription
@@ -52,7 +54,9 @@ class ChatBloc extends BlocBase {
 
     _hasura.mutation(
       SEND_MESSAGE,
-      variables: {'message': message.toJson()},
+      variables: {
+        'message': message.toJson(),
+      },
     ).catchError(print);
 
     textController.text = '';

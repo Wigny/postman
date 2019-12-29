@@ -121,6 +121,7 @@ subscription getChat(\$user_id: Int!) {
     chat {
       id
       name
+      description
       image
       messages(order_by: {sending_at: desc}, limit: 1) {
         id
@@ -133,5 +134,16 @@ subscription getChat(\$user_id: Int!) {
     }
   }
 }
+''';
 
+const GET_USERS_CHAT = '''
+query getUsersChat(\$chat_id: Int!) {
+  user_chats(where: {chat_id: {_eq: \$chat_id}}, order_by: {user: {username: asc}}) {
+    user {
+      id
+      username
+      image
+    }
+  }
+}
 ''';

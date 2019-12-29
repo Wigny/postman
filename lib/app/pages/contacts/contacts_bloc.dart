@@ -20,9 +20,7 @@ class ContactsBloc extends BlocBase {
           .toList();
 
       userListEvent.add(_users);
-    }).catchError(
-      (err) => print('ó o erro aqui, meu povo: $err'),
-    );
+    }).catchError(print);
   }
 
   @override

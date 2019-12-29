@@ -31,8 +31,12 @@ class HomeBloc extends BlocBase {
   }
 
   _getChat(int userId) {
-    _getChatSubscription =
-        _hasura.subscription(GET_CHAT, variables: {'user_id': userId});
+    _getChatSubscription = _hasura.subscription(
+      GET_CHAT,
+      variables: {
+        'user_id': userId,
+      },
+    );
 
     _getChatSubscription
         .map(

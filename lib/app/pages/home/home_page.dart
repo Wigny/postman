@@ -57,8 +57,8 @@ class _HomePageState extends State<HomePage> {
     AsyncSnapshot snapshot,
   ) {
     if (!snapshot.hasData || snapshot.data.isEmpty)
-      return Center(
-        child: const Text('Você não possui messagens'),
+      return Chip(
+        label: Text('Você não possui conversas'),
       );
 
     return ListView.separated(

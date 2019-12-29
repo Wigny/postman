@@ -4,7 +4,6 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:postman/app/pages/home/home_page.dart';
 import 'package:postman/app/repositories/hasura_repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeModule extends ModuleWidget {
   @override
