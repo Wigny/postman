@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:postman/app/models/message_model.dart';
 import 'package:postman/app/pages/chat/chat_bloc.dart';
 import 'package:postman/app/pages/chat/chat_module.dart';
+import 'package:postman/app/pages/chat_info/chat_info_module.dart';
 import 'package:postman/app/widgets/user_image/user_image_widget.dart';
 
 class ChatPage extends StatefulWidget {
@@ -21,14 +22,26 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0,
-        title: Row(
-          children: <Widget>[
-            UserImageWidget(image: bloc.chat.image),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(bloc.chat.name),
+        title: GestureDetector(
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChatInfoModule(
+                bloc.chat,
+              ),
             ),
-          ],
+          ),
+          child: Row(
+            children: <Widget>[
+              UserImageWidget(
+                image: bloc.chat.image,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(bloc.chat.name),
+              ),
+            ],
+          ),
         ),
       ),
       body: Column(
@@ -81,7 +94,7 @@ class _ChatPageState extends State<ChatPage> {
             child: FloatingActionButton(
               child: Icon(Icons.send),
               elevation: 0,
-              onPressed: () => bloc.submitMessage,
+              onPressed: bloc.submitMessage,
             ),
           ),
         ],
@@ -94,8 +107,8 @@ class _ChatPageState extends State<ChatPage> {
     AsyncSnapshot snapshot,
   ) {
     if (!snapshot.hasData || snapshot.data.isEmpty)
-      return Center(
-        child: const Text('Você não possui messagens'),
+      return Chip(
+        label: Text('Você não possui messagens'),
       );
 
     return ListView.builder(
