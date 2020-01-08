@@ -30,7 +30,7 @@ class _ChatInfoPageState extends State<ChatInfoPage> {
               title: Text(bloc.chat.name),
               background: (bloc.chat.image != null)
                   ? Image.network(
-                      bloc.chat.image,
+                      bloc.chat.image.url,
                       fit: BoxFit.cover,
                     )
                   : null,
@@ -138,7 +138,7 @@ class _ChatInfoPageState extends State<ChatInfoPage> {
         width: 50,
         height: 50,
         child: UserImageWidget(
-          image: user.avatar.url,
+          image: user.image.url,
           icon: Icons.person,
         ),
       ),

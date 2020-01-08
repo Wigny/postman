@@ -5,20 +5,22 @@ const SIGNUP = '''
         id
         nickname
         username
-        image
+        image {
+          url
+        }
       }
     }
   }
 ''';
 
 const CREATE_CHAT = '''
-mutation createChat(\$user_id: Int!, \$name: String!, \$description: String, \$image: String) {
-  insert_chat(objects: {user_chats: {data: {user_id: \$user_id}}, name: \$name, description: \$description, image: \$image}) {
+mutation createChat(\$user_id: Int!, \$name: String!, \$description: String, \$image_id: Int) {
+  insert_chat(objects: {user_chats: {data: {user_id: \$user_id}}, name: \$name, description: \$description, image_id: \$image_id}) {
     returning {
       id
       name
       description
-      image
+      image_id
     }
   }
 }
@@ -55,7 +57,9 @@ mutation sendMessage(\$message: [message_insert_input!]!) {
       user {
         id
         username
-        image
+        image {
+          url
+        }
       }
     }
   }
@@ -72,7 +76,9 @@ subscription getMessages(\$chat_id: Int!) {
       user {
         id
         username
-        image
+        image {
+          url
+        }
       }
     }
   }
@@ -110,7 +116,9 @@ query getUsers(\$nickname: String){
     id
     nickname
     username
-    image
+    image {
+      url
+    }
   }
 }
 ''';
@@ -122,7 +130,9 @@ subscription getChat(\$user_id: Int!) {
       id
       name
       description
-      image
+      image {
+        url
+      }
       messages(order_by: {sending_at: desc}, limit: 1) {
         id
         content
@@ -142,7 +152,9 @@ query getUsersChat(\$chat_id: Int!) {
     user {
       id
       username
-      image
+      image {
+        url
+      }
     }
   }
 }

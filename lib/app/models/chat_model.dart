@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:postman/app/models/media_model.dart';
 import 'package:postman/app/models/message_model.dart';
 
 List<ChatModel> chatModelFromJson(String str) =>
@@ -16,7 +17,7 @@ class ChatModel {
   int id;
   String name;
   String description;
-  String image;
+  MediaModel image;
   List<MessageModel> messages;
 
   ChatModel({
@@ -31,7 +32,8 @@ class ChatModel {
         id: json["id"] == null ? null : json["id"],
         name: json["name"] == null ? null : json["name"],
         description: json["description"] == null ? null : json["description"],
-        image: json["image"] == null ? null : json["image"],
+        image:
+            json["image"] == null ? null : MediaModel.fromJson(json["image"]),
         messages: json["messages"] == null
             ? null
             : List<MessageModel>.from(
@@ -45,7 +47,7 @@ class ChatModel {
         "id": id == null ? null : id,
         "name": name == null ? null : name,
         "description": description == null ? null : description,
-        "image": image == null ? null : image,
+        "image": image == null ? null : image.toJson(),
         "messages": messages == null
             ? null
             : List<dynamic>.from(

@@ -45,7 +45,7 @@ class _ContactsPageState extends State<ContactsPage> {
         width: 50,
         height: 50,
         child: UserImageWidget(
-          image: user.avatar.url,
+          image: user.image.url,
         ),
       ),
       title: Text(user.username),

@@ -97,7 +97,9 @@ class _HomePageState extends State<HomePage> {
         leading: Container(
           width: 50,
           height: 50,
-          child: UserImageWidget(image: chat.image),
+          child: UserImageWidget(
+            image: (chat.image != null) ? chat.image.url : null,
+          ),
         ),
         title: Text(chat.name),
         subtitle: (chat.messages.length != 0)

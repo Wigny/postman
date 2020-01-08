@@ -34,7 +34,7 @@ class _ChatPageState extends State<ChatPage> {
           child: Row(
             children: <Widget>[
               UserImageWidget(
-                image: bloc.chat.image,
+                image: bloc.chat.image.url,
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),

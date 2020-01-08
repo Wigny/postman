@@ -14,27 +14,27 @@ class UserModel {
   int id;
   String nickname;
   String username;
-  MediaModel avatar;
+  MediaModel image;
 
   UserModel({
     this.id,
     this.nickname,
     this.username,
-    this.avatar,
+    this.image,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json["id"],
         nickname: json["nickname"],
         username: json["username"],
-        avatar:
-            json["avatar"] == null ? null : MediaModel.fromJson(json["avatar"]),
+        image:
+            json["image"] == null ? null : MediaModel.fromJson(json["image"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "nickname": nickname,
         "username": username,
-        "avatar": avatar == null ? null : avatar.toJson(),
+        "image": image == null ? null : image.toJson(),
       };
 }

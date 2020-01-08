@@ -1,11 +1,11 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:hasura_connect/hasura_connect.dart';
+import 'package:postman/app/models/media_model.dart';
 import 'package:postman/app/models/user_chats_model.dart';
 import 'package:postman/app/models/user_model.dart';
 import 'package:postman/app/repositories/constants.dart';
 import 'package:postman/app/repositories/hasura_repository.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeBloc extends BlocBase {
   final HasuraRepository _hasura;
@@ -17,14 +17,15 @@ class HomeBloc extends BlocBase {
   Sink<List<UserChatsModel>> get chatListEvent => _controller.sink;
 
   HomeBloc(this._hasura) {
-    _init();
-  }
-
-  _init() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-
-    user = userModelFromJson(
-      _prefs.getString('user'),
+    user = UserModel(
+      id: 4,
+      nickname: "wigny",
+      username: "Wígny",
+      image: MediaModel(
+        url:
+            "https://storagepostman.blob.core.windows.net/files/552ee9b3-d9b1-4fd6-b457-3c3f791669b6.jpeg",
+        mimetype: "image/jpeg",
+      ),
     );
 
     _getChat(user.id);
