@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:postman/app/models/media_model.dart';
+
 UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
 
 String userModelToJson(UserModel data) => json.encode(data.toJson());
@@ -12,26 +14,27 @@ class UserModel {
   int id;
   String nickname;
   String username;
-  String image;
+  MediaModel avatar;
 
   UserModel({
     this.id,
     this.nickname,
     this.username,
-    this.image,
+    this.avatar,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json["id"],
         nickname: json["nickname"],
         username: json["username"],
-        image: json["image"] == null ? null : json["image"],
+        avatar:
+            json["avatar"] == null ? null : MediaModel.fromJson(json["avatar"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "nickname": nickname,
         "username": username,
-        "image": image == null ? null : image,
+        "avatar": avatar == null ? null : avatar.toJson(),
       };
 }

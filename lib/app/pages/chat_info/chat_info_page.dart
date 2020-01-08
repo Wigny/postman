@@ -138,7 +138,7 @@ class _ChatInfoPageState extends State<ChatInfoPage> {
         width: 50,
         height: 50,
         child: UserImageWidget(
-          image: user.image,
+          image: user.avatar.url,
           icon: Icons.person,
         ),
       ),
