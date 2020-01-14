@@ -1,5 +1,4 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:postman/app/models/user_model.dart';
 import 'package:postman/app/repositories/constants.dart';
 import 'package:postman/app/repositories/hasura_repository.dart';
 

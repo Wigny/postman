@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:postman/app/models/media_model.dart';
 
 class UserImageWidget extends StatelessWidget {
-  final String image;
+  final MediaModel image;
   final IconData icon;
 
   const UserImageWidget({Key key, this.image, this.icon = Icons.chat})
@@ -9,9 +10,9 @@ class UserImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return (image != null)
+    return (image != null && image.url != null)
         ? CircleAvatar(
-            backgroundImage: NetworkImage(image),
+            backgroundImage: NetworkImage(image.url),
           )
         : Icon(icon);
   }

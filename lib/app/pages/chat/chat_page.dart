@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:postman/app/models/media_model.dart';
 import 'package:postman/app/models/message_model.dart';
 import 'package:postman/app/pages/chat/chat_bloc.dart';
 import 'package:postman/app/pages/chat/chat_module.dart';
@@ -34,7 +34,7 @@ class _ChatPageState extends State<ChatPage> {
           child: Row(
             children: <Widget>[
               UserImageWidget(
-                image: bloc.chat.image.url,
+                image: bloc.chat.image,
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -79,6 +79,13 @@ class _ChatPageState extends State<ChatPage> {
                 decoration: new InputDecoration(
                   contentPadding: const EdgeInsets.symmetric(horizontal: 20),
                   hintText: "Digite uma mensagem",
+                  suffixIcon: IconButton(
+                    onPressed: bloc.uploadFile,
+                    icon: Icon(
+                      Icons.attach_file,
+                      color: Theme.of(context).primaryColorLight,
+                    ),
+                  ),
                   filled: true,
                   focusedBorder: border,
                   enabledBorder: border,
@@ -151,13 +158,13 @@ class _ChatPageState extends State<ChatPage> {
                     style: TextStyle(color: Colors.blue),
                   ),
                 ),
-                Text(
-                  message.content,
-                ),
+                if (message.media != null && message.media.url.isNotEmpty)
+                  _media(message.media),
+                if (message.content != null) Text(message.content),
                 Container(
                   alignment: Alignment.bottomRight,
                   child: Text(
-                    formatDate(message.sendingAt),
+                    bloc.formatDate(message.sendingAt),
                     textAlign: TextAlign.right,
                     style: TextStyle(fontSize: 12),
                   ),
@@ -170,5 +177,30 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  String formatDate(DateTime date) => DateFormat.jm().format(date.toLocal());
+  _media(MediaModel media) {
+    String type = media.mimetype.split('/')[0];
+    Widget child;
+
+    switch (type) {
+      case 'image':
+        child = Image.network(media.url);
+        break;
+      case 'video':
+        // bloc.setVideoController(media.url).then((c) {
+        //   child = VideoPlayer(c);
+        // });
+        child = Text('video');
+        break;
+      default:
+        child = Image.network(media.url);
+
+        // child = Text('Falha');
+        break;
+    }
+
+    return Container(
+      padding: EdgeInsets.all(2),
+      child: child,
+    );
+  }
 }

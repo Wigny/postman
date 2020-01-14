@@ -30,6 +30,11 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   Widget _builder(context, snapshot) {
+    if (!snapshot.hasData || snapshot.data.isEmpty)
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+
     return ListView.builder(
       padding: EdgeInsets.all(8),
       itemCount: snapshot.data.length,
@@ -45,7 +50,7 @@ class _ContactsPageState extends State<ContactsPage> {
         width: 50,
         height: 50,
         child: UserImageWidget(
-          image: user.image.url,
+          image: user.image,
         ),
       ),
       title: Text(user.username),

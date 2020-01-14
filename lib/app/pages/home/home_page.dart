@@ -57,8 +57,10 @@ class _HomePageState extends State<HomePage> {
     AsyncSnapshot snapshot,
   ) {
     if (!snapshot.hasData || snapshot.data.isEmpty)
-      return Chip(
-        label: Text('Você não possui conversas'),
+      return Center(
+        child: Chip(
+          label: Text('Você não possui conversas'),
+        ),
       );
 
     return ListView.separated(
@@ -98,7 +100,7 @@ class _HomePageState extends State<HomePage> {
           width: 50,
           height: 50,
           child: UserImageWidget(
-            image: (chat.image != null) ? chat.image.url : null,
+            image: chat.image,
           ),
         ),
         title: Text(chat.name),

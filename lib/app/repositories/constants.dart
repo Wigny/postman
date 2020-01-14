@@ -49,19 +49,7 @@ subscription onUserJoinChat(\$offset: Int!, \$user_id: Int) {
 const SEND_MESSAGE = '''
 mutation sendMessage(\$message: [message_insert_input!]!) {
   insert_message(objects: \$message) {
-    returning {
-      id
-      content
-      sending_at
-      chat_id
-      user {
-        id
-        username
-        image {
-          url
-        }
-      }
-    }
+     affected_rows
   }
 }
 ''';
@@ -79,6 +67,10 @@ subscription getMessages(\$chat_id: Int!) {
         image {
           url
         }
+      }
+      media {
+        url
+        mimetype
       }
     }
   }

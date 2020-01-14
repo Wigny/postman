@@ -30,9 +30,10 @@ class MediaModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "filename": filename,
-        "mimetype": mimetype,
-        "url": url,
+        "data": {
+          "filename": filename,
+          "mimetype": mimetype,
+          "url": url,
+        },
       };
 }
