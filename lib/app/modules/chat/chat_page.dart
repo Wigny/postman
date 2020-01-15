@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:postman/app/models/media_model.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:postman/app/models/message_model.dart';
-import 'package:postman/app/pages/chat/chat_bloc.dart';
-import 'package:postman/app/pages/chat/chat_module.dart';
-import 'package:postman/app/pages/chat_info/chat_info_module.dart';
+import 'package:postman/app/modules/chat/chat_controller.dart';
+import 'package:postman/app/modules/chat/chat_module.dart';
 import 'package:postman/app/widgets/user_image/user_image_widget.dart';
 
 class ChatPage extends StatefulWidget {
@@ -15,7 +14,7 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  final bloc = ChatModule.to.bloc<ChatBloc>();
+  final controller = ChatModule.to.bloc<ChatController>();
 
   @override
   Widget build(BuildContext context) {
@@ -23,22 +22,15 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(
         titleSpacing: 0,
         title: GestureDetector(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ChatInfoModule(
-                bloc.chat,
-              ),
-            ),
-          ),
+          onTap: () => {},
           child: Row(
             children: <Widget>[
               UserImageWidget(
-                image: bloc.chat.image,
+                image: controller.chat.image,
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(bloc.chat.name),
+                child: Text(controller.chat.name),
               ),
             ],
           ),
@@ -47,9 +39,13 @@ class _ChatPageState extends State<ChatPage> {
       body: Column(
         children: <Widget>[
           Expanded(
-            child: StreamBuilder<List<MessageModel>>(
-              stream: bloc.messageListStream,
-              builder: _builder,
+            child: Observer(
+              builder: (BuildContext context) => ListView.builder(
+                itemCount: controller.messageList.length,
+                itemBuilder: (BuildContext context, int index) => _message(
+                  controller.messageList[index],
+                ),
+              ),
             ),
           ),
           _input(),
@@ -74,25 +70,27 @@ class _ChatPageState extends State<ChatPage> {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: TextField(
-                controller: bloc.textController,
-                decoration: new InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-                  hintText: "Digite uma mensagem",
-                  suffixIcon: IconButton(
-                    onPressed: bloc.uploadFile,
-                    icon: Icon(
-                      Icons.attach_file,
-                      color: Theme.of(context).primaryColorLight,
+              child: Observer(
+                builder: (BuildContext context) => TextField(
+                  decoration: new InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                    hintText: "Digite uma mensagem",
+                    suffixIcon: IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.attach_file,
+                        color: Theme.of(context).primaryColorLight,
+                      ),
                     ),
+                    filled: true,
+                    focusedBorder: border,
+                    enabledBorder: border,
                   ),
-                  filled: true,
-                  focusedBorder: border,
-                  enabledBorder: border,
+                  autofocus: false,
+                  textInputAction: TextInputAction.send,
+                  onChanged: controller.setNewMessage,
+                  onSubmitted: (v) => controller.submitMessage(),
                 ),
-                autofocus: false,
-                textInputAction: TextInputAction.send,
-                onSubmitted: (value) => bloc.submitMessage(),
               ),
             ),
           ),
@@ -101,7 +99,7 @@ class _ChatPageState extends State<ChatPage> {
             child: FloatingActionButton(
               child: Icon(Icons.send),
               elevation: 0,
-              onPressed: bloc.submitMessage,
+              onPressed: controller.submitMessage,
             ),
           ),
         ],
@@ -109,28 +107,8 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  Widget _builder(
-    BuildContext context,
-    AsyncSnapshot snapshot,
-  ) {
-    if (!snapshot.hasData || snapshot.data.isEmpty)
-      return Chip(
-        label: Text('Você não possui messagens'),
-      );
-
-    return ListView.builder(
-      padding: EdgeInsets.all(8),
-      itemCount: snapshot.data.length,
-      itemBuilder: (BuildContext context, int index) {
-        return _message(
-          snapshot.data[index],
-        );
-      },
-    );
-  }
-
   Widget _message(MessageModel message) {
-    bool itsMe = message.user.id == bloc.user.id;
+    bool itsMe = message.user.id == controller.user.id;
 
     var alignment = Alignment.centerLeft;
     var crossAxisAlignment = CrossAxisAlignment.start;
@@ -158,13 +136,11 @@ class _ChatPageState extends State<ChatPage> {
                     style: TextStyle(color: Colors.blue),
                   ),
                 ),
-                if (message.media != null && message.media.url.isNotEmpty)
-                  _media(message.media),
-                if (message.content != null) Text(message.content),
+                Text((message.content != null) ? message.content : ''),
                 Container(
                   alignment: Alignment.bottomRight,
                   child: Text(
-                    bloc.formatDate(message.sendingAt),
+                    controller.formatDate(message.sendingAt),
                     textAlign: TextAlign.right,
                     style: TextStyle(fontSize: 12),
                   ),
@@ -174,33 +150,6 @@ class _ChatPageState extends State<ChatPage> {
           ),
         ),
       ),
-    );
-  }
-
-  _media(MediaModel media) {
-    String type = media.mimetype.split('/')[0];
-    Widget child;
-
-    switch (type) {
-      case 'image':
-        child = Image.network(media.url);
-        break;
-      case 'video':
-        // bloc.setVideoController(media.url).then((c) {
-        //   child = VideoPlayer(c);
-        // });
-        child = Text('video');
-        break;
-      default:
-        child = Image.network(media.url);
-
-        // child = Text('Falha');
-        break;
-    }
-
-    return Container(
-      padding: EdgeInsets.all(2),
-      child: child,
     );
   }
 }

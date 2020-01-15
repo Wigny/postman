@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:postman/app/models/user_model.dart';
-import 'package:postman/app/pages/contacts/contacts_bloc.dart';
-import 'package:postman/app/pages/contacts/contacts_module.dart';
+import 'package:postman/app/modules/contacts/contacts_controller.dart';
+import 'package:postman/app/modules/contacts/contacts_module.dart';
 import 'package:postman/app/widgets/user_image/user_image_widget.dart';
 
 class ContactsPage extends StatefulWidget {
@@ -13,34 +14,22 @@ class ContactsPage extends StatefulWidget {
 }
 
 class _ContactsPageState extends State<ContactsPage> {
+  final controller = ContactsModule.to.getBloc<ContactsController>();
+
   @override
   Widget build(BuildContext context) {
-    final _bloc = ContactsModule.to.bloc<ContactsBloc>();
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: StreamBuilder<List<UserModel>>(
-        stream: _bloc.userListFlux,
-        initialData: [],
-        builder: _builder,
+      body: Observer(
+        builder: (BuildContext context) => ListView.builder(
+          itemCount: controller.userList.length,
+          itemBuilder: (BuildContext context, int index) => _listTile(
+            controller.userList[index],
+          ),
+        ),
       ),
-    );
-  }
-
-  Widget _builder(context, snapshot) {
-    if (!snapshot.hasData || snapshot.data.isEmpty)
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-
-    return ListView.builder(
-      padding: EdgeInsets.all(8),
-      itemCount: snapshot.data.length,
-      itemBuilder: (BuildContext context, int index) {
-        return _listTile(snapshot.data[index]);
-      },
     );
   }
 

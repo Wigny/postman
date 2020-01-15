@@ -1,14 +1,12 @@
-import 'package:postman/app/app_module.dart';
-import 'package:postman/app/pages/contacts/contacts_bloc.dart';
+import 'package:postman/app/modules/contacts/contacts_controller.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
-import 'package:postman/app/pages/contacts/contacts_page.dart';
-import 'package:postman/app/repositories/hasura_repository.dart';
+import 'package:postman/app/modules/contacts/contacts_page.dart';
 
 class ContactsModule extends ModuleWidget {
   @override
   List<Bloc> get blocs => [
-        Bloc((i) => ContactsBloc(AppModule.to.get<HasuraRepository>())),
+        Bloc((i) => ContactsController()),
       ];
 
   @override

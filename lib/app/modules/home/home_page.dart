@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:postman/app/models/chat_model.dart';
+import 'package:postman/app/modules/chat/chat_module.dart';
+import 'package:postman/app/modules/contacts/contacts_module.dart';
 import 'package:postman/app/modules/home/home_controller.dart';
 import 'package:postman/app/modules/home/home_module.dart';
 import 'package:postman/app/widgets/user_image/user_image_widget.dart';
@@ -19,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Postman'),
+        title: Text('Olá, ${controller.user.username}'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -34,7 +36,9 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => {},
+        onPressed: () => openPage(
+          ContactsModule(),
+        ),
         child: Icon(Icons.people),
       ),
     );
@@ -66,7 +70,12 @@ class _HomePageState extends State<HomePage> {
 
   Widget _listTile(ChatModel chat) {
     return InkWell(
-      onTap: () {},
+      onTap: () => openPage(
+        ChatModule(
+          chat,
+          controller.user,
+        ),
+      ),
       child: ListTile(
         leading: Container(
           width: 50,

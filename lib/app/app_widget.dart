@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:postman/app/modules/home/home_module.dart';
+import 'package:postman/app/modules/login/login_module.dart';
 
 class AppWidget extends StatelessWidget {
   @override
@@ -11,7 +11,7 @@ class AppWidget extends StatelessWidget {
         brightness: Brightness.dark,
         accentColor: Color(0xff075E53),
       ),
-      home: HomeModule(),
+      home: LoginModule(),
     );
   }
 

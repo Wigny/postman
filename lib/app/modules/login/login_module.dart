@@ -6,7 +6,9 @@ import 'package:postman/app/modules/login/login_page.dart';
 class LoginModule extends ModuleWidget {
   @override
   List<Bloc> get blocs => [
-        Bloc((i) => LoginController()),
+        Bloc(
+          (i) => LoginController(),
+        ),
       ];
 
   @override
