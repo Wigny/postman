@@ -1,6 +1,6 @@
 import 'package:hasura_connect/hasura_connect.dart';
 import 'package:postman/app/repositories/hasura_repository.dart';
-import 'package:postman/app/app_bloc.dart';
+import 'package:postman/app/app_controller.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:postman/app/app_widget.dart';
@@ -8,7 +8,7 @@ import 'package:postman/app/app_widget.dart';
 class AppModule extends ModuleWidget {
   @override
   List<Bloc> get blocs => [
-        Bloc((i) => AppBloc()),
+        Bloc((i) => AppController()),
       ];
 
   @override
@@ -18,11 +18,11 @@ class AppModule extends ModuleWidget {
             i.get<HasuraConnect>(),
           ),
         ),
-        Dependency<HasuraConnect>(
-          (i) => HasuraConnect(
-            "https://postman-backend.herokuapp.com/v1/graphql",
-          ),
-        ),
+        Dependency<HasuraConnect>((i) {}
+            // => HasuraConnect(
+            //   "https://postman-backend.herokuapp.com/v1/graphql",
+            // ),
+            ),
       ];
 
   @override

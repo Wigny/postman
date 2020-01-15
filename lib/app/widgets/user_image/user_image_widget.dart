@@ -5,8 +5,11 @@ class UserImageWidget extends StatelessWidget {
   final MediaModel image;
   final IconData icon;
 
-  const UserImageWidget({Key key, this.image, this.icon = Icons.chat})
-      : super(key: key);
+  const UserImageWidget({
+    Key key,
+    this.image,
+    this.icon = Icons.chat,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

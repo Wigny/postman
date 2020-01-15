@@ -4,10 +4,9 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
-  video_player: ^0.10.5+1
   file_picker: ^1.4.3+2
   path_provider: ^1.5.1
   intl: ^0.16.0
@@ -15,7 +14,8 @@ dependencies:
   hasura_connect: ^1.0.5
   hive: ^1.1.1
   dio: ^3.0.8
-  rxdart: ^0.23.1
+  flutter_mobx: ^0.3.6
+  mobx: ^0.4.0+1
   bloc_pattern: ^2.5.1
   flutter:
     sdk: flutter
@@ -25,6 +25,8 @@ dependencies:
 
 dev_dependencies:
   mockito: ^4.1.1
+  mobx_codegen: ^0.4.0+1
+  build_runner: ^1.7.3
   flutter_test:
     sdk: flutter
 
@@ -70,3 +72,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+scripts:
+  watch: flutter pub run build_runner watch
