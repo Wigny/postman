@@ -26,23 +26,6 @@ mixin _$ChatController on _ChatBase, Store {
     }, _$messageListAtom, name: '${_$messageListAtom.name}_set');
   }
 
-  final _$newMessageAtom = Atom(name: '_ChatBase.newMessage');
-
-  @override
-  String get newMessage {
-    _$newMessageAtom.context.enforceReadPolicy(_$newMessageAtom);
-    _$newMessageAtom.reportObserved();
-    return super.newMessage;
-  }
-
-  @override
-  set newMessage(String value) {
-    _$newMessageAtom.context.conditionallyRunInAction(() {
-      super.newMessage = value;
-      _$newMessageAtom.reportChanged();
-    }, _$newMessageAtom, name: '${_$newMessageAtom.name}_set');
-  }
-
   final _$_ChatBaseActionController = ActionController(name: '_ChatBase');
 
   @override
@@ -50,16 +33,6 @@ mixin _$ChatController on _ChatBase, Store {
     final _$actionInfo = _$_ChatBaseActionController.startAction();
     try {
       return super.addMessage(message);
-    } finally {
-      _$_ChatBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic setNewMessage(String v) {
-    final _$actionInfo = _$_ChatBaseActionController.startAction();
-    try {
-      return super.setNewMessage(v);
     } finally {
       _$_ChatBaseActionController.endAction(_$actionInfo);
     }

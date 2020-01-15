@@ -48,9 +48,11 @@ class _HomePageState extends State<HomePage> {
     return ListView.separated(
       itemCount: controller.chatList.length,
       itemBuilder: (BuildContext context, int index) {
-        controller.chatList.sort(sortChat);
+        // controller.chatList.sort(sortChat);
 
-        return _listTile(controller.chatList[index]);
+        return _listTile(
+          controller.chatList[index],
+        );
       },
       separatorBuilder: (BuildContext context, int index) => Padding(
         padding: EdgeInsets.only(

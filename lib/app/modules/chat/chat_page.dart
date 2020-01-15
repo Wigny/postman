@@ -39,11 +39,14 @@ class _ChatPageState extends State<ChatPage> {
       body: Column(
         children: <Widget>[
           Expanded(
-            child: Observer(
-              builder: (BuildContext context) => ListView.builder(
-                itemCount: controller.messageList.length,
-                itemBuilder: (BuildContext context, int index) => _message(
-                  controller.messageList[index],
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Observer(
+                builder: (BuildContext context) => ListView.builder(
+                  itemCount: controller.messageList.length,
+                  itemBuilder: (BuildContext context, int index) => _message(
+                    controller.messageList[index],
+                  ),
                 ),
               ),
             ),
@@ -88,7 +91,7 @@ class _ChatPageState extends State<ChatPage> {
                   ),
                   autofocus: false,
                   textInputAction: TextInputAction.send,
-                  onChanged: controller.setNewMessage,
+                  controller: controller.input,
                   onSubmitted: (v) => controller.submitMessage(),
                 ),
               ),

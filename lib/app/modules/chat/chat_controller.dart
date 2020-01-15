@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 import 'package:postman/app/models/chat_model.dart';
@@ -12,7 +13,13 @@ class ChatController = _ChatBase with _$ChatController;
 abstract class _ChatBase with Store {
   final ChatModel chat;
   final UserModel user;
+
+  TextEditingController input = TextEditingController();
   int today;
+
+  _ChatBase(this.chat, this.user) {
+    today = DateTime.now().day;
+  }
 
   @observable
   ObservableList<MessageModel> messageList = <MessageModel>[
@@ -34,27 +41,19 @@ abstract class _ChatBase with Store {
     ),
   ].asObservable();
 
-  _ChatBase(this.chat, this.user) {
-    today = DateTime.now().day;
-  }
-  @observable
-  String newMessage;
-
   @action
   addMessage(MessageModel message) => messageList.add(message);
 
-  @action
-  setNewMessage(String v) => newMessage = v;
-
   submitMessage() {
     var message = MessageModel(
-      content: newMessage,
+      content: input.text,
       user: user,
       chatId: chat.id,
       sendingAt: DateTime.now(),
     );
 
     addMessage(message);
+    input.text = '';
   }
 
   String formatDate(DateTime date) {
