@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:postman/app/models/message_model.dart';
 import 'package:postman/app/modules/chat/chat_controller.dart';
 import 'package:postman/app/modules/chat/chat_module.dart';
+import 'package:postman/app/modules/chat_info/chat_info_module.dart';
 import 'package:postman/app/widgets/user_image/user_image_widget.dart';
 
 class ChatPage extends StatefulWidget {
@@ -22,7 +23,14 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(
         titleSpacing: 0,
         title: GestureDetector(
-          onTap: () => {},
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChatInfoModule(
+                controller.chat,
+              ),
+            ),
+          ),
           child: Row(
             children: <Widget>[
               UserImageWidget(

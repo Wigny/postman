@@ -1,10 +1,8 @@
-import 'package:postman/app/app_module.dart';
 import 'package:postman/app/models/chat_model.dart';
-import 'package:postman/app/pages/chat_info/chat_info_bloc.dart';
+import 'package:postman/app/modules/chat_info/chat_info_controller.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
-import 'package:postman/app/pages/chat_info/chat_info_page.dart';
-import 'package:postman/app/repositories/hasura_repository.dart';
+import 'package:postman/app/modules/chat_info/chat_info_page.dart';
 
 class ChatInfoModule extends ModuleWidget {
   final ChatModel chat;
@@ -14,9 +12,8 @@ class ChatInfoModule extends ModuleWidget {
   @override
   List<Bloc> get blocs => [
         Bloc(
-          (i) => ChatInfoBloc(
+          (i) => ChatInfoController(
             chat,
-            AppModule.to.get<HasuraRepository>(),
           ),
         ),
       ];
