@@ -1,5 +1,4 @@
 import 'package:mobx/mobx.dart';
-import 'package:postman/app/models/media_model.dart';
 import 'package:postman/app/models/user_model.dart';
 
 part 'login_controller.g.dart';
@@ -20,20 +19,16 @@ abstract class _LoginBase with Store {
   setNickname(String v) => nickname = v;
 
   String get validateNickname =>
-      (nickname == 'w') ? 'O nickname já está em uso' : null;
+      (nickname == 'wigny') ? 'O nickname já está em uso' : null;
 
   @computed
   bool get isValid =>
       username.isNotEmpty && nickname.isNotEmpty && validateNickname == null;
 
+  @computed
   UserModel get getUser => UserModel(
-        id: 4,
+        id: 999,
         nickname: nickname,
         username: username,
-        image: MediaModel(
-          url:
-              "https://storagepostman.blob.core.windows.net/files/552ee9b3-d9b1-4fd6-b457-3c3f791669b6.jpeg",
-          mimetype: "image/jpeg",
-        ),
       );
 }

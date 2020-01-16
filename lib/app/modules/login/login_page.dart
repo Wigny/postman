@@ -14,6 +14,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final controller = LoginModule.to.getBloc<LoginController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,43 +24,39 @@ class _LoginPageState extends State<LoginPage> {
       body: Form(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Observer(
-                  builder: (BuildContext context) => _input(
-                    label: 'Nome',
-                    helper:
-                        'Esse é seu nome de usuário, ele será visível para todos.',
-                    icon: Icons.person,
-                    onChanged: controller.setUsername,
-                  ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Observer(
+                builder: (BuildContext context) => _input(
+                  label: 'Nome',
+                  helper:
+                      'Esse é seu nome de usuário, ele será visível para todos.',
+                  icon: Icons.person,
+                  onChanged: controller.setUsername,
                 ),
-                Observer(
-                  builder: (BuildContext context) => _input(
-                    label: 'Nickname',
-                    error: controller.validateNickname,
-                    helper:
-                        'Esse é seu nickname, ele não é público e será utilizado como seu método de login.',
-                    icon: Icons.lock_outline,
-                    onChanged: controller.setNickname,
-                  ),
+              ),
+              Observer(
+                builder: (BuildContext context) => _input(
+                  label: 'Nickname',
+                  error: controller.validateNickname,
+                  helper:
+                      'Esse é seu nickname, ele não é público e será utilizado como seu método de login.',
+                  icon: Icons.lock_outline,
+                  onChanged: controller.setNickname,
                 ),
-                Observer(
-                  builder: (BuildContext context) => _button(
-                    label: 'Login',
-                    onPressed: controller.isValid
-                        ? () => _openPage(
-                              HomeModule(controller.getUser),
-                            )
-                        : null,
-                  ),
+              ),
+              Observer(
+                builder: (BuildContext context) => _button(
+                  label: 'Login',
+                  onPressed: controller.isValid
+                      ? () => _openPage(
+                            HomeModule(controller.getUser),
+                          )
+                      : null,
                 ),
-                Text(
-                  'Já tenho uma conta...',
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

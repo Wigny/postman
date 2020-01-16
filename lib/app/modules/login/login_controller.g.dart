@@ -14,6 +14,11 @@ mixin _$LoginController on _LoginBase, Store {
   @override
   bool get isValid =>
       (_$isValidComputed ??= Computed<bool>(() => super.isValid)).value;
+  Computed<UserModel> _$getUserComputed;
+
+  @override
+  UserModel get getUser =>
+      (_$getUserComputed ??= Computed<UserModel>(() => super.getUser)).value;
 
   final _$usernameAtom = Atom(name: '_LoginBase.username');
 
