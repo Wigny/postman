@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:postman/app/models/chat.model.dart';
@@ -18,7 +20,15 @@ class _ChatPageState extends ModularState<ChatPage, ChatBloc> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.chat.title),
+        title: Row(
+          children: <Widget>[
+            Icon(Icons.message),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(controller.chat.title),
+            ),
+          ],
+        ),
       ),
       body: Column(
         children: <Widget>[
@@ -95,6 +105,7 @@ class _ChatPageState extends ModularState<ChatPage, ChatBloc> {
     return ListView.builder(
       padding: EdgeInsets.all(8),
       reverse: true,
+      controller: controller.scrollController,
       itemCount: snapshot.data.length,
       itemBuilder: (BuildContext context, int index) => message(
         snapshot.data[index],
@@ -104,6 +115,7 @@ class _ChatPageState extends ModularState<ChatPage, ChatBloc> {
 
   Widget message(MessageModel message) {
     bool currentUser = message.user.id == controller.user.id;
+    Random random = Random(message.user.id);
 
     return Container(
       alignment: currentUser ? Alignment.centerRight : Alignment.centerLeft,
@@ -123,7 +135,12 @@ class _ChatPageState extends ModularState<ChatPage, ChatBloc> {
                   child: Text(
                     message.user.name,
                     style: TextStyle(
-                      color: Colors.primaries[message.user.id],
+                      color: Color.fromARGB(
+                        255,
+                        random.nextInt(255),
+                        random.nextInt(255),
+                        random.nextInt(255),
+                      ),
                     ),
                   ),
                 ),

@@ -25,8 +25,11 @@ class _HomePageState extends ModularState<HomePage, HomeBloc> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: controller.addChat,
-        child: Icon(Icons.add_shopping_cart),
+        child: Icon(Icons.add_comment),
+        onPressed: () => showDialog(
+          context: context,
+          builder: dialog,
+        ),
       ),
     );
   }
@@ -68,6 +71,33 @@ class _HomePageState extends ModularState<HomePage, HomeBloc> {
         '/chats/${chat.id}',
         arguments: chat,
       ),
+    );
+  }
+
+  Widget dialog(BuildContext context) {
+    return AlertDialog(
+      title: Text("Criar chat"),
+      content: TextField(
+        autofocus: true,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: "Título",
+        ),
+        controller: controller.textController['title'],
+      ),
+      actions: <Widget>[
+        FlatButton(
+          child: const Text('Cancelar'),
+          onPressed: () => Modular.navigator.pop(context),
+        ),
+        FlatButton(
+          child: const Text('Salvar'),
+          onPressed: () {
+            controller.addChat();
+            Modular.navigator.pop(context);
+          },
+        ),
+      ],
     );
   }
 }

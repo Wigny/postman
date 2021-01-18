@@ -14,6 +14,7 @@ class ChatBloc extends Disposable {
   final HiveRepository hive;
 
   TextEditingController textController = TextEditingController();
+  ScrollController scrollController = ScrollController();
 
   Snapshot snapshot;
   BehaviorSubject<List<MessageModel>> messages = BehaviorSubject();
@@ -50,6 +51,9 @@ class ChatBloc extends Disposable {
       "chat_id": chat.id,
     });
     snapshot.map(convert).pipe(messages);
+    messages.listen(scrollListView);
+
+    snapshot.doOnCancel(messages.close);
   }
 
   void submit([String value]) {
@@ -72,12 +76,21 @@ class ChatBloc extends Disposable {
     };
 
     hasura.mutation(mutation, variables: variables);
-    textController.text = '';
+    textController.clear();
+  }
+
+  void scrollListView(_) {
+    if (scrollController.hasClients) {
+      scrollController.animateTo(
+        0.0,
+        duration: Duration(seconds: 1),
+        curve: Curves.fastOutSlowIn,
+      );
+    }
   }
 
   @override
   void dispose() {
-    messages?.close();
     snapshot?.close();
   }
 }

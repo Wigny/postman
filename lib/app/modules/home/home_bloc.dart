@@ -9,6 +9,11 @@ class HomeBloc extends Disposable {
   final HasuraConnect hasura;
   final UserModel user;
 
+  Map<String, TextEditingController> textController = {
+    'title': TextEditingController(),
+    'description': TextEditingController(),
+  };
+
   Snapshot snapshot;
   BehaviorSubject<List<ChatModel>> chats = BehaviorSubject();
 
@@ -41,8 +46,27 @@ class HomeBloc extends Disposable {
   }
 
   addChat() {
-    // Modular.to.showDialog(builder: (context) {
-    // });
+    String mutation = """
+      mutation MyMutation(\$chat: [chats_insert_input!]!) {
+        insert_chats(objects: \$chat) {
+          returning {
+            id
+          }
+        }
+      }
+    """;
+
+    Map<String, dynamic> variables = {
+      'chat': ChatModel(
+        title: textController['title'].text,
+        // description: textController['description'].text,
+      ).toMap()
+    };
+
+    hasura.mutation(mutation, variables: variables);
+
+    textController['title'].clear();
+    textController['description'].clear();
   }
 
   @override

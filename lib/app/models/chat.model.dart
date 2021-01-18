@@ -19,9 +19,7 @@ class ChatModel {
       );
 
   Map<String, dynamic> toMap() => {
-        "id": id,
         "title": title,
-        "description": description,
-        "created_at": createdAt.toIso8601String(),
+        "description": description == null ? null : description,
       };
 }

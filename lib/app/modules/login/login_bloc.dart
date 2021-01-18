@@ -84,7 +84,7 @@ class LoginBloc extends Disposable {
         .then(user)
         .then(add);
 
-    textController.text = '';
+    textController.clear();
   }
 
   void openHome(UserModel user) {
