@@ -24,6 +24,10 @@ class _HomePageState extends ModularState<HomePage, HomeBloc> {
           builder: builder,
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: controller.addChat,
+        child: Icon(Icons.add_shopping_cart),
+      ),
     );
   }
 

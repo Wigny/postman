@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:hasura_connect/hasura_connect.dart';
 import 'package:postman/app/models/chat.model.dart';
@@ -37,6 +38,11 @@ class HomeBloc extends Disposable {
 
     snapshot = await hasura.subscription(subscription);
     snapshot.map(convert).pipe(chats);
+  }
+
+  addChat() {
+    // Modular.to.showDialog(builder: (context) {
+    // });
   }
 
   @override
