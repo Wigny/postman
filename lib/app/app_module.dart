@@ -1,4 +1,6 @@
 import 'package:hasura_connect/hasura_connect.dart';
+import 'package:postman/app/modules/chat/chat_module.dart';
+import 'package:postman/app/modules/login/login_module.dart';
 import 'package:postman/app/repositories/hive_repository.dart';
 import 'package:postman/app/app_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -14,7 +16,7 @@ class AppModule extends MainModule {
         ),
         Bind(
           (i) => HasuraConnect(
-            "https://androidtv-chat.hasura.app/v1/graphql",
+            'https://androidtv-chat.hasura.app/v1/graphql',
           ),
         ),
         Bind(
@@ -24,7 +26,9 @@ class AppModule extends MainModule {
 
   @override
   List<ModularRouter> get routers => [
-        ModularRouter(Modular.initialRoute, module: HomeModule()),
+        ModularRouter(Modular.initialRoute, module: LoginModule()),
+        ModularRouter('/home', module: HomeModule()),
+        ModularRouter('/chats', module: ChatModule()),
       ];
 
   @override
