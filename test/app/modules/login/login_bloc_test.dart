@@ -1,21 +1,22 @@
 import 'package:flutter_modular/flutter_modular_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:postman/app/app_bloc.dart';
 import 'package:postman/app/app_module.dart';
+import 'package:postman/app/modules/login/login_bloc.dart';
+import 'package:postman/app/modules/login/login_module.dart';
 
 void main() {
   Modular.init(AppModule());
-  Modular.bindModule(AppModule());
-  AppBloc bloc;
+  Modular.bindModule(LoginModule());
+  LoginBloc bloc;
 
   // setUp(() {
-  //     bloc = AppModule.to.get<AppBloc>();
+  //     bloc = LoginModule.to.get<LoginBloc>();
   // });
 
-  // group('AppBloc Test', () {
+  // group('LoginBloc Test', () {
   //   test("First Test", () {
-  //     expect(bloc, isInstanceOf<AppBloc>());
+  //     expect(bloc, isInstanceOf<LoginBloc>());
   //   });
   // });
 }
