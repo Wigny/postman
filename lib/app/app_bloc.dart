@@ -1,9 +1,7 @@
-import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
-class AppBloc extends BlocBase {
+class AppBloc extends Disposable {
   //dispose will be called automatically by closing its streams
   @override
-  void dispose() {
-    super.dispose();
-  }
+  void dispose() {}
 }

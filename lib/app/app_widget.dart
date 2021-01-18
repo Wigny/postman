@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:postman/app/pages/home/home_module.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+      navigatorKey: Modular.navigatorKey,
+      title: 'Postman',
       theme: ThemeData(
-        primarySwatch: _color,
+        primarySwatch: color,
         brightness: Brightness.dark,
         accentColor: Color(0xff075E53),
       ),
-      home: HomeModule(),
+      initialRoute: '/',
+      onGenerateRoute: Modular.generateRoute,
     );
   }
 
-  final MaterialColor _color = MaterialColor(0xff075E53, {
+  final MaterialColor color = MaterialColor(0xff075E53, {
     50: Color(0xffE1ECEA),
     100: Color(0xffB5CFCB),
     200: Color(0xff83AFA9),

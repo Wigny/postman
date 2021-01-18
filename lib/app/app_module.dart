@@ -1,32 +1,34 @@
 import 'package:hasura_connect/hasura_connect.dart';
-import 'package:postman/app/repositories/hasura_repository.dart';
+import 'package:postman/app/repositories/hive_repository.dart';
 import 'package:postman/app/app_bloc.dart';
-import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter/material.dart';
 import 'package:postman/app/app_widget.dart';
+import 'package:postman/app/modules/home/home_module.dart';
 
-class AppModule extends ModuleWidget {
+class AppModule extends MainModule {
   @override
-  List<Bloc> get blocs => [
-        Bloc((i) => AppBloc()),
-      ];
-
-  @override
-  List<Dependency> get dependencies => [
-        Dependency<HasuraRepository>(
-          (i) => HasuraRepository(
-            i.get<HasuraConnect>(),
-          ),
+  List<Bind> get binds => [
+        Bind(
+          (i) => AppBloc(),
         ),
-        Dependency<HasuraConnect>(
+        Bind(
           (i) => HasuraConnect(
-            "https://postman-backend.herokuapp.com/v1/graphql",
+            "https://androidtv-chat.hasura.app/v1/graphql",
           ),
+        ),
+        Bind(
+          (i) => HiveRepository(),
         ),
       ];
 
   @override
-  Widget get view => AppWidget();
+  List<ModularRouter> get routers => [
+        ModularRouter(Modular.initialRoute, module: HomeModule()),
+      ];
+
+  @override
+  Widget get bootstrap => AppWidget();
 
   static Inject get to => Inject<AppModule>.of();
 }
